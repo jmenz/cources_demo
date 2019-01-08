@@ -1,0 +1,20 @@
+{
+    "name": "jmenz/presentation",
+    "description": "project for presentation",
+    "type": "project",
+    "license": "free",
+    "authors": [
+        {
+            "name": "jmenz",
+            "email": "jmenz89@gmail.com"
+        }
+    ],
+    "autoload" : {
+        "psr-4": {"Shop\\": "app/"},
+        "classmap": ["app/"]
+    },
+    "require": {
+        "katzgrau/klogger": "dev-master",
+        "sagrishin/lightweight-php-orm": "^1.3"
+    }
+}
