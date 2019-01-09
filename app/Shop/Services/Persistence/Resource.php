@@ -66,9 +66,46 @@ abstract class Resource extends Table
         if (count($result)) {
             foreach ($result[0] as $field => $value) {
                 $setterName = 'set' . ucfirst($field);
-                $this->model->$setterName($value);
+                if (method_exists($this->model, $setterName)) {
+                    $this->model->$setterName($value);
+                }
             }
         }
+    }
+
+    /**
+     * @param array $params
+     * @return \Shop\Services\Model\PersistebleEntityInterface[]
+     */
+    public function getCollection($params = [])
+    {
+        if (count($params)){
+            $pdo_statement = $this->getQueryGeneratorInstance()
+                ->selectByKeys($this->table_name, array_keys($params));
+        } else {
+            $pdo_statement = $this->getQueryGeneratorInstance()
+                ->selectAll($this->table_name);
+        }
+
+        $query_executor = new QueryExecutor($pdo_statement, $params);
+        $result = $query_executor->select();
+
+        if (count($result)) {
+            $collection = [];
+            foreach ($result as $item) {
+                $model = clone $this->model;
+                foreach ($item as $field => $value) {
+                    $setterName = 'set' . ucfirst($field);
+                    if (method_exists($model, $setterName)) {
+                        $model->$setterName($value);
+                    }
+                }
+                $collection[] = $model;
+            }
+            return $collection;
+        }
+
+        return [];
     }
 
     /**
