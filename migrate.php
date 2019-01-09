@@ -6,10 +6,18 @@ include_once __DIR__ . "/vendor/autoload.php";
 
 $db = new \Shop\Database();
 
-$product = new \Shop\Product\ExtendedProduct();
+if (isset($_GET['model'])) {
+    $modelClassName = $_GET['model'];
 
-$product->getPersistence()->migrate();
+    if (class_exists($modelClassName)) {
+        $model = new $_GET['model']();
 
-//$customer = new \Shop\Customer\Customer();
-//
-//$customer->getPersistence()->migrate();
+        if ($model->getPersistence()->migrate()) {
+            echo 'Success';
+            die();
+        }
+    }
+}
+
+echo "please specify correct model class name, for example: ?model=\Shop\Customer\Customer";
+
