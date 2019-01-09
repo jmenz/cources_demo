@@ -5,7 +5,9 @@ namespace Shop\Product;
 class ExtendedProduct extends SimpleProduct
 {
     /**
+     * @field
      * @var string
+     * @size 512
      */
     private $description;
 

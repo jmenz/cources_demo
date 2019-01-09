@@ -3,6 +3,7 @@ namespace Shop\Product;
 
 interface ProductInterface
 {
+
     /**
      * @param string $name
      * @return mixed

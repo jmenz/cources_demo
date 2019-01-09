@@ -2,47 +2,40 @@
 
 namespace Shop\Product;
 
-use Shop\Product\Persistence\Product as Persistence;
+use Shop\Services\Model\AbstractModel;
 
-class SimpleProduct implements ProductInterface
+class SimpleProduct extends AbstractModel implements ProductInterface
 {
     /**
+     * @var string
+     */
+    protected $persistenceClass = "Shop\Product\Persistence\Product";
+
+    /**
+     * @field
      * @var float
      */
-    private $price;
+    protected $price;
 
     /**
+     * @field
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
+     * @field
      * @var string
+     * @size 128
      */
-    private $brand;
+    protected $brand;
 
     /**
+     * @field
+     * @primary
      * @var integer
      */
-    private $id;
-
-    /**
-     * @var Persistence|null
-     */
-    private $persistence = null;
-
-    /**
-     * @return null|Persistence
-     */
-    public function getPersistence()
-    {
-        if ($this->persistence === null) {
-            $this->persistence = new Persistence();
-            $this->persistence->setModel($this);
-        }
-
-        return $this->persistence;
-    }
+    protected $id;
 
     /**
      * @return float
@@ -107,6 +100,4 @@ class SimpleProduct implements ProductInterface
     {
         $this->id = $id;
     }
-
-
 }

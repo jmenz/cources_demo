@@ -6,6 +6,10 @@ include_once __DIR__ . "/vendor/autoload.php";
 
 $db = new \Shop\Database();
 
-$productPersistence = new \Shop\Product\Persistence\Product();
+$product = new \Shop\Product\ExtendedProduct();
 
-$productPersistence->migrate();
+$product->getPersistence()->migrate();
+
+//$customer = new \Shop\Customer\Customer();
+//
+//$customer->getPersistence()->migrate();
