@@ -7,10 +7,11 @@ class App
     public static function run()
     {
         try {
-            $db = new Services\Database();
+            Services\DiContainer::getInstance()->make("Shop\Services\Database");
 
-            $router = new Services\Router();
+            $router = Services\DiContainer::getInstance()->make(Services\Router::class);
             $router->dispatch();
+
         } catch (Services\SystemException $e) {
             Services\Logger::getLogger()
                 ->log(\Psr\Log\LogLevel::ERROR, $e->getMessage(), $e->getTrace());

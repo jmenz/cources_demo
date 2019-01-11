@@ -7,6 +7,20 @@ use Shop\Services\ControllerInterface;
 
 class Controller implements ControllerInterface
 {
+
+    private $customer;
+
+    /**
+     * Controller constructor.
+     * @param CustomerInterface $customer
+     */
+    public function __construct(
+        CustomerInterface $customer
+    )
+    {
+        $this->customer = $customer;
+    }
+
     /**
      * @param $request
      * @param $response
@@ -15,10 +29,9 @@ class Controller implements ControllerInterface
      */
     public function execute($request, $response)
     {
-        $customer = new Customer();
         try {
-            $customer->getPersistence()->load($request->id);
-            return print_r($customer, true);
+            $this->customer->getPersistence()->load($request->id);
+            return print_r($this->customer, true);
         } catch (NotFoundException $e) {
             return "Sorry, the customer not found";
         }

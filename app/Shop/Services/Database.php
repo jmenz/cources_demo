@@ -2,16 +2,31 @@
 
 namespace Shop\Services;
 
-use orm\DataBase\AbstractDataBase;
+use orm\Exceptions\OrmRuntimeException;
+use orm\Query\QueryMemento;
 
 /**
  * Class Database
  * @package Shop
  */
-final class Database extends AbstractDataBase
+final class Database
 {
-    public $dbtype = "mysql";
-    public $dbname = "elogic_cources_test";
-    public $user = "root";
-    public $password = "753dfx";
+
+    /**
+     * Database constructor.
+     * @param $settings
+     */
+    public function __construct($settings)
+    {
+        try {
+            QueryMemento::getInstance()
+                ->addQueryData("dbname", $settings['dbname'])
+                ->addQueryData("dbtype", $settings['dbtype'])
+                ->addQueryData("username", $settings['user'])
+                ->addQueryData("password", $settings['password']);
+
+        } catch (\Exception $exception) {
+            die (new OrmRuntimeException("Expected username and password for mysql server"));
+        }
+    }
 }
