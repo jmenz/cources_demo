@@ -21,8 +21,8 @@ class CustomMysqlQueryGenerator extends MysqlQueryGenerator
      */
     private $pdo = null;
 
-    /*
-     *
+    /**
+     * CustomMysqlQueryGenerator constructor.
      */
     public function __construct()
     {
