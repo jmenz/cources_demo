@@ -16,8 +16,18 @@ class Router
         ],
         [
             'method' => "GET",
-            'path' => "/product/[:id]",
-            'className' => "\Shop\Product\Controller"
+            'path' => "/product/[i:id]",
+            'className' => "\Shop\Product\Controllers\View"
+        ],
+        [
+            'method' => "GET",
+            'path' => "/product/new",
+            'className' => "\Shop\Product\Controllers\NewController"
+        ],
+        [
+            'method' => "POST",
+            'path' => "/product/save",
+            'className' => "\Shop\Product\Controllers\Save"
         ],
         [
             'method' => "GET",
@@ -27,7 +37,9 @@ class Router
     ];
 
     /**
+     *
      * Routing entry point
+     * @throws \Exception
      */
     public function dispatch()
     {
@@ -39,7 +51,7 @@ class Router
                 $route['path'],
                 function ($request, $response) use ($route) {
                     /** @var ControllerInterface $controller */
-                    $controller = new $route['className']();
+                    $controller = DiContainer::getInstance()->get($route['className']);
                     if ($controller instanceof ControllerInterface) {
                         return $controller->execute($request, $response);
                     } else {
@@ -50,4 +62,14 @@ class Router
 
         $klein->dispatch();
     }
+
+    /**
+     * @return \DI\Container
+     * @throws \Exception
+     */
+    private function getDiContainer()
+    {
+        return DiContainer::getInstance();
+    }
+
 }

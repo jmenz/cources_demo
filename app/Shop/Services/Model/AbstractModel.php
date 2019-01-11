@@ -15,12 +15,16 @@ abstract class AbstractModel implements PersistebleEntityInterface
     protected $persistence = null;
 
     /**
-     * @return null|\Shop\Services\Persistence\Resource
+     * @return mixed|\Shop\Services\Persistence\Resource|string
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \Exception
      */
     public function getPersistence()
     {
         if ($this->persistence === null) {
-            $this->persistence = new $this->persistenceClass();
+            $this->persistence = \Shop\Services\DiContainer::getInstance()
+                ->get($this->persistenceClass);
             $this->persistence->setModel($this);
             $this->persistence->initTable();
         }
