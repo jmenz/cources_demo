@@ -6,10 +6,8 @@ use orm\DataBase\Table;
 use orm\DataBase\Field;
 use orm\DataBase\fields\PrimaryKey;
 use orm\DataBase\fields\ForeignKey;
-use orm\Query\MysqlQueryGenerator;
 use orm\Query\QueryMemento;
 use orm\Query\QueryExecutor;
-use orm\Exceptions\QueryGenerationException;
 use orm\Exceptions\MigrationException;
 
 /**
@@ -113,7 +111,7 @@ abstract class Resource extends Table
     }
 
     /**
-     * @throws \orm\Exceptions\QueryGenerationException
+     * @throws CantSaveException
      */
     public function save()
     {
@@ -127,7 +125,7 @@ abstract class Resource extends Table
                 array_values($data)));
             $this->updateValueOfPrimaryKey($query_executor->insertOrUpdate());
         } catch (\PDOException $e) {
-            throw new QueryGenerationException($e->getMessage());
+            throw new CantSaveException($e->getMessage());
         }
     }
 
@@ -303,7 +301,8 @@ abstract class Resource extends Table
     {
         foreach ($this->table_fields as $key => $value) {
             if ($value instanceof PrimaryKey) {
-                $this->{$key} = $primary_key_new_value;
+                $setterName = 'set' . ucfirst($key);
+                $this->model->$setterName($primary_key_new_value);
                 break;
             }
         }
