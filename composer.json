@@ -10,11 +10,12 @@
         }
     ],
     "autoload" : {
-        "psr-4": {"Shop\\": "app/"},
-        "classmap": ["app/"]
+        "psr-4": {"Shop\\": "app/Shop"},
+        "classmap": ["app/Shop"]
     },
     "require": {
         "katzgrau/klogger": "dev-master",
-        "sagrishin/lightweight-php-orm": "^1.3.3"
+        "sagrishin/lightweight-php-orm": "^1.3.3",
+        "klein/klein": "^2.1"
     }
 }

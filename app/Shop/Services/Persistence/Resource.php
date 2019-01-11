@@ -6,6 +6,7 @@ use orm\DataBase\Table;
 use orm\DataBase\Field;
 use orm\DataBase\fields\PrimaryKey;
 use orm\DataBase\fields\ForeignKey;
+use orm\Query\MysqlQueryGenerator;
 use orm\Query\QueryMemento;
 use orm\Query\QueryExecutor;
 use orm\Exceptions\QueryGenerationException;
@@ -56,6 +57,7 @@ abstract class Resource extends Table
     /**
      * @param $value
      * @param string $field
+     * @throws \Exception
      */
     public function load($value, $field = 'id')
     {
@@ -70,6 +72,8 @@ abstract class Resource extends Table
                     $this->model->$setterName($value);
                 }
             }
+        } else {
+            throw new NotFoundException('Entity not found');
         }
     }
 
@@ -134,7 +138,7 @@ abstract class Resource extends Table
     public function migrate()
     {
         try {
-            $generator = $this->getQueryGeneratorInstance();
+            $generator = $this->getCustomQueryGeneratorInstance();
             (new QueryExecutor($generator->createTable($this->table_name, $this->table_fields), []))
                 ->executeSql();
             return true;
@@ -282,6 +286,14 @@ abstract class Resource extends Table
             ucfirst(QueryMemento::getInstance()->getStorage()["dbtype"]) .
             "QueryGenerator";
         return new $generator_name();
+    }
+
+    /**
+     * @return mixed|\orm\Query\QueryGeneratorInterface
+     */
+    private function getCustomQueryGeneratorInstance()
+    {
+        return new CustomMysqlQueryGenerator();
     }
 
     /**
