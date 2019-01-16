@@ -13,7 +13,8 @@ class DiContainer extends Singleton
         if (null === static::$instance) {
             $builder = new \DI\ContainerBuilder();
             $builder->useAutowiring(true);
-            $builder->addDefinitions(DOCKROOT . '/app/config.php');
+            $builder->addDefinitions(DOCKROOT . '/app/configs/global.config.php');
+            $builder->addDefinitions(DOCKROOT . '/app/configs/routing.php');
 
             static::$instance = $builder->build();
         }

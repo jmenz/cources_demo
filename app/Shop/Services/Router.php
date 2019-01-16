@@ -8,33 +8,16 @@ class Router
     /**
      * @var array
      */
-    public $routes = [
-        [
-            'method' => "GET",
-            'path' => "/migrate/",
-            'className' => "\Shop\Services\Database\MigrateController"
-        ],
-        [
-            'method' => "GET",
-            'path' => "/product/[i:id]",
-            'className' => "\Shop\Product\Controllers\View"
-        ],
-        [
-            'method' => "GET",
-            'path' => "/product/new",
-            'className' => "\Shop\Product\Controllers\NewController"
-        ],
-        [
-            'method' => "POST",
-            'path' => "/product/save",
-            'className' => "\Shop\Product\Controllers\Save"
-        ],
-        [
-            'method' => "GET",
-            'path' => "/customer/[:id]",
-            'className' => "\Shop\Customer\Controller"
-        ]
-    ];
+    private $routes = [];
+
+    /**
+     * Router constructor
+     * @param array $routes
+     */
+    public function __construct($routes)
+    {
+        $this->routes = $routes;
+    }
 
     /**
      *
